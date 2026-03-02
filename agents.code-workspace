@@ -1,0 +1,15 @@
+{
+    "folders": [
+        {
+            "path": "../../../Projects/agents"
+        },
+        {
+            "name": "MultiAgent-LLM-Agent-Orchestrator_lab",
+            "path": "."
+        }
+    ],
+    "settings": {
+        "python.defaultInterpreterPath": "C:/Users/Mohamed Arshad/Projects/agents/.venv/Scripts/python.exe",
+        "python.terminal.activateEnvironment": true
+    }
+}
