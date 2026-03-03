@@ -7,3 +7,5 @@ wikipedia
 langchain-tavily
 langgraph[all]
 langchain-community
+mcp
+langchain-mcp-adapters
