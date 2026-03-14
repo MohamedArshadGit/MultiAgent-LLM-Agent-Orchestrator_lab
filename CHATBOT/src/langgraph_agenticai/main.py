@@ -27,7 +27,7 @@ def load_langgraph_agenticai_app():
     if user_message:
         try:
             # configure the LLM's
-            obj_llm_config =GroqLLM(user_controls_input=user_input)
+            obj_llm_config =GroqLLM(user_controls_input=user_input) #user_input we are getting from load_ui's file (from class LoadStreamlitUI) 
             model =obj_llm_config.get_llm_model()
 
             if not model:
