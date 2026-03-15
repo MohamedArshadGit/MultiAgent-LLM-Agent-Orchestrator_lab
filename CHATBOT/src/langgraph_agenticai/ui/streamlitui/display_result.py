@@ -21,6 +21,7 @@ class DisplayResultStreamlit:
     
     def display_result_on_ui(self):
         usecase =self.usecase
+        # here just we are assigning varibales (usecase =,graph=,user_message =) for easy coding or everything we have to write like self.usecase, self.graph etc
         graph =self.graph
         user_message =self.user_message
         print(user_message)

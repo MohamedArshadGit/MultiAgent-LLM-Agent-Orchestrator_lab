@@ -5,6 +5,7 @@ import streamlit as st
 from src.langgraph_agenticai.ui.streamlitui.loadui import LoadStreamlitUI
 from src.langgraph_agenticai.llms.groqllm import GroqLLM
 from src.langgraph_agenticai.graph.graph_builder import GraphBuilder
+from src.langgraph_agenticai.ui.streamlitui.display_result import DisplayResultStreamlit
 
 def load_langgraph_agenticai_app():
     """
@@ -17,33 +18,44 @@ def load_langgraph_agenticai_app():
 
     ui =LoadStreamlitUI()
     user_input =ui.load_streamlit_ui()
+    # user_input is a dictionary like this:
+# {
+#     "GROQ_API_KEY": "abc123...",
+#     "selected_groq_model": "llama3-8b-8192",
+#     "selected_usecase": "Basic Chatbot"
+#User fills the sidebar — API key, model, usecase. All stored in user_input dictionary.
+# }
 
     if not user_input:
         st.error("Error: Failed to load user input from the UI.")
         return
     
-    user_message = st.chat_input("Enter your message:")
+    user_message = st.chat_input("Enter your message:") 
 
     if user_message:
         try:
             # configure the LLM's
-            obj_llm_config =GroqLLM(user_controls_input=user_input) #user_input we are getting from load_ui's file (from class LoadStreamlitUI) 
-            model =obj_llm_config.get_llm_model()
+            obj_llm_config =GroqLLM(user_controls_input=user_input) #this is GroqLLM class
+            model =obj_llm_config.get_llm_model() # from groqllm.py's file(get_llm_model method has groq api key,model)
 
             if not model:
                 st.error('Error : LLM model could not be initialized')
                 return 
 
             #Iniitalize and setup the graph based on usecase
-            use_case = user_input.get('selected_usecase')
+            usecase = user_input.get('selected_usecase')
+            print(f"DEBUG usecase = '{usecase}'")   # add this line
 
-            if not use_case:
+            if not usecase:
                 st.error('Error: No use Case Selected .Please select Any one of the UseCase')
                 return
 
-            graph_builder =GraphBuilder(model)
+            graph_builder =GraphBuilder(model) #GraphBuilder Class
             try:
-                graph =graph_builder.setup_graph(usecase=use_case)
+                graph =graph_builder.setup_graph(usecase=usecase)
+                print(f"DEBUG graph = {graph}") 
+                #once graph executed and return go to display result code 
+                DisplayResultStreamlit(usecase,graph,user_message).display_result_on_ui()
             except Exception as e:
                 st.error(f"Error:Graph Setup Failed->{e}")
                 return
@@ -51,6 +63,7 @@ def load_langgraph_agenticai_app():
 
 
         except Exception as e:
+            st.error(f" Error: GroqLLM or usecase or all Failed {e}")
             return
 
 

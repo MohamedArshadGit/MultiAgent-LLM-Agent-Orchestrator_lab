@@ -2,7 +2,7 @@ from src.langgraph_agenticai.state.state import State
 
 class BasicChatbotNode:
     
-    def __init__(self,model):
+    def __init__(self,model): #what is model here it is confusing me 
         self.llm =model
         
     def process(self,state:State)->dict:
