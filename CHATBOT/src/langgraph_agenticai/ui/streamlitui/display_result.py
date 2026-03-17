@@ -1,10 +1,11 @@
 import streamlit as st
 
 class DisplayResultStreamlit:
-    def __init__(self,usecase,graph,user_message) :
+    def __init__(self,usecase,graph,user_message,config={}) :
         self.usecase =usecase #They store values inside the object.
         self.graph =graph
         self.user_message =user_message
+        self.config =config
     # A constructor runs automatically when you create an object.
     # example : obj = DisplayResultStreamlit("Basic Chatbot", graph, "Hi")
     # When this runs → Python automatically calls
@@ -25,9 +26,10 @@ class DisplayResultStreamlit:
         graph =self.graph
         user_message =self.user_message
         print(user_message)
+        config =self.config
 
         if usecase =="Basic Chatbot":
-            for event in graph.stream({'messages':("user",user_message)}):
+            for event in graph.stream({'messages':("user",user_message)},config):
                     print(event.values())
                     for value in event.values():
                         print(value['messages'])

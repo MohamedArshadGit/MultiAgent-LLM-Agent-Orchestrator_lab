@@ -6,6 +6,15 @@ from src.langgraph_agenticai.ui.streamlitui.loadui import LoadStreamlitUI
 from src.langgraph_agenticai.llms.groqllm import GroqLLM
 from src.langgraph_agenticai.graph.graph_builder import GraphBuilder
 from src.langgraph_agenticai.ui.streamlitui.display_result import DisplayResultStreamlit
+from src.langgraph_agenticai.utils.logger import logger,callback_handler
+
+import os
+os.environ['LANGCHAIN_TRACING_V2'] = 'true'
+os.environ['LANGCHAIN_PROJECT'] = 'CHATBOT'
+
+from dotenv import load_dotenv
+load_dotenv()
+
 
 def load_langgraph_agenticai_app():
     """
@@ -34,6 +43,7 @@ def load_langgraph_agenticai_app():
 
     if user_message:
         try:
+            logger.info("Main", "App started", {"message": user_message}) 
             # configure the LLM's
             obj_llm_config =GroqLLM(user_controls_input=user_input) #this is GroqLLM class
             model =obj_llm_config.get_llm_model() # from groqllm.py's file(get_llm_model method has groq api key,model)
@@ -53,16 +63,20 @@ def load_langgraph_agenticai_app():
             graph_builder =GraphBuilder(model) #GraphBuilder Class
             try:
                 graph =graph_builder.setup_graph(usecase=usecase)
-                print(f"DEBUG graph = {graph}") 
+                config = {"callbacks": [callback_handler]} #tells LangGraph:"whenever you run, call these callback methods automatically so on_chain_start, on_llm_start etc all fire automatically
+                logger.info("Main", "Graph built", {"usecase": usecase}) 
+
                 #once graph executed and return go to display result code 
-                DisplayResultStreamlit(usecase,graph,user_message).display_result_on_ui()
+                DisplayResultStreamlit(usecase,graph,user_message,config).display_result_on_ui() #use config here to display callback handler
             except Exception as e:
+                logger.error("Main", "Graph failed", {"error": str(e)})
                 st.error(f"Error:Graph Setup Failed->{e}")
                 return
 
 
 
         except Exception as e:
+            logger.error("Main", "App failed", {"error": str(e)})
             st.error(f" Error: GroqLLM or usecase or all Failed {e}")
             return
 
