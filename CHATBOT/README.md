@@ -1,6 +1,6 @@
 # CHATBOT — Modular Agentic Chatbot (LangGraph + ChatGroq)
 
-> A production-grade, modular agentic chatbot built phase by phase using LangGraph, ChatGroq, and Streamlit. Designed as a learning and portfolio project that grows from a basic chatbot into a full multi-agent system with tools, memory, RAG, GraphRAG, evaluation, and cloud deployment.
+> A production-grade, modular agentic chatbot built phase by phase using LangGraph, ChatGroq, and Streamlit. Designed as a portfolio project that grows from a basic chatbot into a full multi-agent system with tools, memory, RAG, GraphRAG, evaluation, and cloud deployment.
 
 ---
 
